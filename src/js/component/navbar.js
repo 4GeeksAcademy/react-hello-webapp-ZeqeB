@@ -1,17 +1,31 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
-	return (
-		<nav className="navbar navbar-light bg-light mb-3">
-			<Link to="/">
-				<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-			</Link>
-			<div className="ml-auto">
-				<Link to="/demo">
-					<button className="btn btn-primary">Check the Context in action</button>
-				</Link>
-			</div>
-		</nav>
-	);
+    const { store } = useContext(Context);
+
+    return (
+        <nav className="navbar navbar-light bg-light">
+            <div className="container">
+                <Link to="/" className="navbar-brand">Star Wars App</Link>
+                <div className="dropdown">
+                    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Favoritos ({store.favorites.length})
+                    </button>
+                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {store.favorites.length > 0 ? (
+                            store.favorites.map((item, index) => (
+                                <li key={index}>
+                                    <Link className="dropdown-item" to={`/${item.type}/${item.uid}`}>{item.name}</Link>
+                                </li>
+                            ))
+                        ) : (
+                            <li>No hay favoritos</li>
+                        )}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    );
 };
